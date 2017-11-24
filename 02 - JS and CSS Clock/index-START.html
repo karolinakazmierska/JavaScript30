@@ -14,6 +14,11 @@
         <div class="hand second-hand"></div>
       </div>
     </div>
+    <div class="digital-clock">
+        <span class="num hour-num"></span>:
+        <span class="num min-num"></span>:
+        <span class="num sec-num"></span>
+    </div>
 
 
   <style>
@@ -59,15 +64,85 @@
     .hand {
       width:50%;
       height:6px;
-      background:black;
+      background:white;
       position: absolute;
       top:50%;
+      transform-origin: 100%;
+      transform: rotate(90deg);
+      transition: all 0.5s;
+      transition-timing-function: ease;
+    }
+
+    .digital-clock {
+        width: 300px;
+        height: 100px;
+        background-color: blue;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #c0c0c0;
+        border: 5px solid white;
+        border-radius: 10px;
+        box-shadow: 5px 5px 5px 0px rgba(255,255,255,0.55);
+        color: #404040;
+        font-size: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
   </style>
 
   <script>
 
+function startClock() {
+    var date = new Date();
+
+    // Seconds
+    var secondHand = document.querySelector('.second-hand');
+    var seconds = date.getSeconds();
+    var secDegree = ((seconds / 60) * 360) + 90;
+    secondHand.style.transform = `rotate(${secDegree}deg)`;
+
+    // Digital Seconds
+    var digitalSeconds = document.querySelector('.sec-num');
+    if (seconds < 10) {
+        digitalSeconds.innerText = "0" + seconds;
+    } else {
+        digitalSeconds.innerText = seconds;
+    }
+
+    // Minutes
+    var minHand = document.querySelector('.min-hand');
+    var minutes = date.getMinutes();
+    var minDegree = ((minutes / 60) * 360) + 90;
+    console.log("Degrees:", minDegree, " ; ", "Minutes:", minutes);
+    minHand.style.transform = `rotate(${minDegree}deg)`;
+
+    // Digital Minutes
+    var digitalMinutes = document.querySelector('.min-num');
+    if (minutes < 10) {
+        digitalMinutes.innerText = "0" + minutes;
+    } else {
+        digitalMinutes.innerText = minutes;
+    }
+
+    // Hours
+    var hourHand = document.querySelector('.hour-hand');
+    var hours = date.getHours();
+    if (hours > 12) {
+        hours = hours - 12;
+    }
+    var hoursDegree = ((hours / 12) * 360) + 90;
+    hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+
+    // Digital Hours
+    var digitalHours = document.querySelector('.hour-num');
+    digitalHours.innerText = date.getHours();
+
+}
+
+setInterval(startClock, 1000);
 
   </script>
 </body>
